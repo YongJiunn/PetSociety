@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link rel="stylesheet" href="/css/homepage.css">
+  <title>Pets Gallery</title>
+</head>
+<style>
+  .petcard {
+    background-color: rgb(255, 223, 212);
+  }
+</style>
+
+<body id='petroot' onload='onboarding(),typeWriter()'>
+
+  <!-- navbar start -->
+  <nav class="shadow-sm navbar navbar-expand-lg navbar-light sticky-top website-topbar">
+    <div class="container-fluid">
+      <div class='mx-md-2 overflow-visible'>
+        <a href="/screens/homeScreen.html">
+          <img style="position: relative; left: 30%" class='hover-zoom' src='/images/petsoc.png' width=80 height=80>
+        </a>
+      </div>
+      <div id="nav-middle" class="d-flex flex-row">
+        <form class='mx-lg-auto' autocomplete="off">
+          <input class="form-control rounded1 me-2 d-md-inline d-none mt-1" type="search"
+            placeholder="Search for Users or Pets" aria-label="Search" id='websearchInput' onkeyup="loadWebSearch()"
+            onclick="loadWebSearchList()">
+          <ul class='rounded2 themebg position-fixed mt-2 shadow' id="webSearchDisplay"
+            style='list-style-type: none; padding: 0; margin: 0; border:0;display:none;'>
+          </ul>
+        </form>
+
+        <!-- modal button start -->
+        <button id="post" class='btn ms-lg-3 d-flex hover-color' data-bs-toggle="modal" data-bs-target="#createPost"
+          onclick="fillPost(this.id)"><img class='float-start' width=32 height=32
+            src='/images/icons/pencil-square.svg'><span style='white-space:nowrap' class="fs-7 ms-1 float-start mt-1"
+            id='newpost'>New Post</span>
+        </button>
+      </div>
+      <!-- modal button end -->
+
+      <button class="navbar-toggler mx-1 border-0 hover-color " type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarScroll" aria-controls="navbarSupportedContent" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarScroll">
+        <ul id='navBarIcons' class="navbar-nav" style="--bs-scroll-height: 100px; position: relative;">
+          <li id="search" class="nav-item mx-4 d-inline d-md-none mt-2 mb-3">
+            <form class='px-2' autocomplete="off">
+              <input class="form-control rounded1 me-2" type="search" placeholder="Search for Users or Pets"
+                aria-label="Search" id='mobilesearchInput' onkeyup="loadMobileSearch()"
+                onclick="loadMobileSearchList()">
+
+              <ul id="mobileSearchDisplay" class='rounded2 themebg mt-2 shadow'
+                style='list-style-type: none; padding: 0; margin: 0;display:none;'>
+              </ul>
+            </form>
+          </li>
+
+          <li id="petsgallery" class="nav-item mx-3 hover-color">
+            <a class="nav-link active px-2" href="#"><img src="/images/icons/animals-fill.png"
+                alt="Bootstrap" width="32" height="32">
+              <span class='d-sm-inline d-md-inline d-lg-none my-auto mx-3 text-dark'>Pets Gallery</span>
+              <span class='d-none d-xl-inline text-dark'>Pets Gallery</span></a>
+          </li>
+
+          <li id="home" class="nav-item mx-3 hover-color" onclick=fill(this.id)>
+            <a class="nav-link active px-2" aria-current="page" href="/screens/homeScreen.html"><img src="/images/icons/house.svg"
+                alt="Bootstrap" width="32" height="32">
+              <span class='d-sm-inline d-md-inline d-lg-none my-auto mx-3 text-dark '>Home</span>
+              <span class='d-none d-xl-inline text-dark'>Home</span></a>
+          </li>
+
+          <!-- right now it navigates to the one for mobile -->
+          <li id="chat" class="nav-item mx-3 hover-color" onclick=fill(this.id)>
+            <a class="nav-link px-2" href="/screens/livechat.html"><img src="/images/icons/chat.svg" alt="Bootstrap"
+                width="32" height="32">
+              <span class='d-sm-inline d-md-inline d-lg-none my-auto mx-3 text-dark '>Chat</span>
+              <span class='d-none d-xl-inline text-dark'>Chat</span></a>
+          </li>
+          
+          <li class="nav-item mx-3 hover-color dropdown" onclick=fill(this.id)>
+            <a class="nav-link px-2  dropdown-toggle" href="#" data-bs-toggle="dropdown"><img
+                src="/images/icons/person.svg" alt="Bootstrap" width="32" height="32">
+              <span class='d-sm-inline d-md-inline d-lg-none my-auto mx-3 text-dark '>Profile</span></a>
+            <ul class="dropdown-menu rounded2 themebg border border-0 shadow">
+              <li id="profile" class='hover-color2'><a class="dropdown-item hover-color2" href="#">Your Profile</a></li>
+              <li id="logout" onclick=logout()><a class="dropdown-item hover-color3" href="#"> Log Out </a></li>
+            </ul>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- navbar end -->
+
+  <!-- modal start -->
+  <div class="modal fade " id="createPost" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold" id="exampleModalLabel">Create A New Post</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id='post-body'>
+
+          <!-- form start -->
+          <!-- drop files start-->
+          <div class="input-group">
+            <button type="button" class="btn themebg hover-color2 rounded2 mb-1"> <label id='uploadImageLabel'
+                for="file">Upload an Image</label></button>
+            <input type="file" class="button button-secondary m-2" style="display:none" id="file"
+              accept="image/png, image/jpeg, image/heic" name="file" multiple onchange="loadImageDisplay(event)">
+          </div>
+          <div class='ml-3'>
+            <img id="output" class="card-img-top rounded2 shadow" style='max-height:500px; object-fit:cover'>
+          </div>
+
+          <!-- drop files end-->
+
+          <!-- post text start -->
+          <label class='ms-2' for='post-text'>Caption:</label>
+          <div class="input-group m-2">
+            <textarea placeholder="Post Caption" id="post-text" name="text" type="textbox"
+              class="form-control"></textarea>
+          </div>
+          <label class='ms-2' for='tagsearchInput'>Tag:</label>
+          <form class='input-group m-2' autocomplete="off">
+            <input placeholder="Who are you with?" id='tagsearchInput' onkeyup="loadTagSearch()"
+              onclick="loadTagSearchList()" name="Tag" type="Tag" class="form-control ml-3">
+            <!-- <input class="form-control rounded1 me-2 d-sm-inline d-none" type="search" placeholder="Search for Users or Pets" aria-label="Search" id='websearchInput'onkeyup="loadWebSearch()" onclick="loadWebSearchList()"> -->
+          </form>
+          <ul id="tagSearchDisplay" class='themebg rounded2'
+            style='position:fixed;z-index: 100;list-style-type: none; padding: 0; margin: 0;'>
+          </ul>
+          <!-- <div class="input-group m-2">
+            </div> -->
+
+          <!-- post text end -->
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="createPost()">Post</button>
+        </div>
+        <!-- form end -->
+
+      </div>
+    </div>
+  </div>
+  <!-- modal end -->
+  <div id='app'>
+    <div class='container-fluid text-center py-5'> Showing {{petnumber}} Results</div>
+    <div class='container-fluid px-5' id='cardgallery'>
+      <div class='row'>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3" v-for='pet in petlist'>
+          <div class="card my-3 mx-3 petcard">
+            <img :src="pet.petImage" class="card-img-top heightResponsive" alt="petimage"
+              style='width:100%; object-fit:cover;'>
+            <div class="card-body">
+              <h5 class="card-title overflow-hidden">{{pet.petName}}</h5>
+              <a :href="pet.petID" class="stretched-link"></a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class='container-fluid d-flex justify-content-center my-5'>
+      <div id='pagenav'>
+        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+          <div class="btn-group mr-2" role="group" aria-label="First group" v-for="n in numpages">
+            <a class="btn btn-outline-secondary mx-1" :href=`/screens/allPets.html?page=${n}` role="button"
+              v-if='n != thispage'>{{n}}</a>
+            <a class='btn btn-secondary mx-1' :href=`/screens/allPets.html?page=${n}` role='button' v-else>{{n}}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/vue@next"></script>
+<script src='/scripts/allPets.js'></script>
+<script src="/scripts/homepage.js"></script>
+<script src='/scripts/firebase/connector.js'></script>
+<script src='/scripts/firebase/createPost.js'></script>
+<script>
+  currentLocation = "no location"
+
+  function success(position) {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+    currentLocation = { latitude: latitude, longitude: longitude }
+  }
+
+  function error() {
+    console.log(currentLocation)
+  }
+
+  if (!navigator.geolocation) {
+    alert('Geolocation is not supported by your browser');
+  } else {
+    navigator.geolocation.getCurrentPosition(success, error);
+  }
+  function createPost() {
+    const file = document.getElementById("file").files[0]
+    createNewPost()
+  }
+  myStorage = window.sessionStorage;
+  if (myStorage.userID === undefined) {
+    console.log("Not login")
+    // console.log(myStorage)
+  } else {
+    console.log("Login")
+    // console.log(myStorage)
+    user_id = myStorage.userID
+    // console.log(user_id)
+  }
+</script>
+
+</html>
